@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -37,12 +38,15 @@ public class LoginController {
         try {
             RestTemplate restTemplate = new RestTemplate();
             ShoppingInfo shoppingInfo = restTemplate.getForObject("http://localhost:8080/myshop/cardInfo", ShoppingInfo.class);
+
+            System.out.println("Card Number " + shoppingInfo.getCardNumber());
+
             if (shoppingInfo.getUsername().equalsIgnoreCase("admin") && shoppingInfo.getPassword().equals("admin")) {
                 for (CardDetails cardDetails : cardServiceImpl.getCardDetails()) {
-                    if (cardDetails.getCardNumber().equals(shoppingInfo.getCardNumber())) {
+                    if (BCrypt.checkpw(cardDetails.getCardNumber(), shoppingInfo.getCardNumber())) {
                         if (cardDetails.getTotalBalance() >= shoppingInfo.getTotalBalance()) {
-                            cardDetails.setTotalBalance(cardDetails.getTotalBalance()-shoppingInfo.getTotalBalance());
-                            System.out.println("BALANCE IS "+(cardDetails.getTotalBalance()-shoppingInfo.getTotalBalance()));
+                            cardDetails.setTotalBalance(cardDetails.getTotalBalance() - shoppingInfo.getTotalBalance());
+                            System.out.println("BALANCE IS " + (cardDetails.getTotalBalance() - shoppingInfo.getTotalBalance()));
                             cardServiceImpl.updateCurrentBalance(cardDetails); //update balance in database
                             return new ResponseEntity<>(shoppingInfo, HttpStatus.OK);
                         }
