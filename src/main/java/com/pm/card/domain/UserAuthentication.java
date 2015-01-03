@@ -9,10 +9,12 @@ package com.pm.card.domain;
  *
  * @author sunil
  */
-
 public class UserAuthentication {
+
     private String username;
     private String password;
+    private String cardNumber;
+    private Double expense;
 
     public String getUsername() {
         return username;
@@ -29,6 +31,22 @@ public class UserAuthentication {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public Double getExpense() {
+        return expense;
+    }
+
+    public void setExpense(Double expense) {
+        this.expense = expense;
+    }
     
-    
+
 }

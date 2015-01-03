@@ -5,6 +5,7 @@
  */
 package com.pm.card.domain;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ import javax.persistence.Temporal;
  * @author sunil
  */
 @Entity
-public class CardVerification implements Serializable {
+public class CardDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -29,6 +30,8 @@ public class CardVerification implements Serializable {
     private double totalBalance;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date lastTransactionDate;
+   
+    
 
     public int getId() {
         return id;
