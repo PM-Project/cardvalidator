@@ -15,4 +15,5 @@ import java.util.List;
 public interface CardService {
     List<CardDetails> getCardDetails();
     public void updateCurrentBalance(CardDetails cd); 
+    public CardDetails findByCardDetails(String cardNumber) ;
 }

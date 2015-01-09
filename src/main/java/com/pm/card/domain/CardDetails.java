@@ -30,6 +30,7 @@ public class CardDetails implements Serializable {
     private double totalBalance;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date lastTransactionDate;
+    private String cvv;
    
     
 
@@ -72,6 +73,17 @@ public class CardDetails implements Serializable {
     public void setLastTransactionDate(Date lastTransactionDate) {
         this.lastTransactionDate = lastTransactionDate;
     }
+
+    public String getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
+    }
+
+   
+    
 
     
 }

@@ -35,24 +35,31 @@ public class LoginController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public ResponseEntity<?> testMethod() {
+
         try {
             RestTemplate restTemplate = new RestTemplate();
+
             ShoppingInfo shoppingInfo = restTemplate.getForObject("http://localhost:8080/myshop/cardInfo", ShoppingInfo.class);
+            System.out.println(">>>>>>>>>>>>>" + shoppingInfo.getCardNumber());
 
             System.out.println("Card Number " + shoppingInfo.getCardNumber());
 
+            CardDetails cardDetails = cardServiceImpl.findByCardDetails(shoppingInfo.getCardNumber());
+
             if (shoppingInfo.getUsername().equalsIgnoreCase("admin") && shoppingInfo.getPassword().equals("admin")) {
-                for (CardDetails cardDetails : cardServiceImpl.getCardDetails()) {
-                    if (BCrypt.checkpw(cardDetails.getCardNumber(), shoppingInfo.getCardNumber())) {
-                        if (cardDetails.getTotalBalance() >= shoppingInfo.getTotalBalance()) {
+                if (cardDetails != null) {
+                    System.out.println("NOTTTTTTTT "+cardDetails.getCvv()+":::"+shoppingInfo.getCvv());
+                     if (cardDetails.getCardNumber().equals(shoppingInfo.getCardNumber()) && cardDetails.getCvv().equals(shoppingInfo.getCvv())) {
+                         System.out.println("NOTTTTTT****8");
+                         if (cardDetails.getTotalBalance() >= shoppingInfo.getTotalBalance()) {
                             cardDetails.setTotalBalance(cardDetails.getTotalBalance() - shoppingInfo.getTotalBalance());
                             System.out.println("BALANCE IS " + (cardDetails.getTotalBalance() - shoppingInfo.getTotalBalance()));
                             cardServiceImpl.updateCurrentBalance(cardDetails); //update balance in database
                             return new ResponseEntity<>(shoppingInfo, HttpStatus.OK);
-                        }
-                        break;
+                        }                        
                     }
                 }
+
             }
         } catch (Exception e) {
         }

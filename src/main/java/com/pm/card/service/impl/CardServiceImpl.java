@@ -30,5 +30,10 @@ public class CardServiceImpl implements CardService{
     public void updateCurrentBalance(CardDetails cd) {
         cardDaoImpl.updateCurrentBalance(cd);
     }
+
+    @Override
+    public CardDetails findByCardDetails(String cardNumber) {
+        return cardDaoImpl.findByCardDetails(cardNumber);
+    }
     
 }

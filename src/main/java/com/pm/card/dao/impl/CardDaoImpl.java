@@ -32,5 +32,11 @@ public class CardDaoImpl extends SessionUtil implements CardDao{
           getSession().update(details);
          System.out.println("Update is ");
     }
+
+    @Override
+    public CardDetails findByCardDetails(String cardNumber) {
+//         return (CardDetails) getSession().get(CardDetails.class, cardNumber); 
+         return (CardDetails) getSession().createQuery("SELECT c FROM CardDetails c WHERE c.cardNumber = ?").setFetchSize(1).setParameter(0, cardNumber).uniqueResult();
+    }
     
 }
