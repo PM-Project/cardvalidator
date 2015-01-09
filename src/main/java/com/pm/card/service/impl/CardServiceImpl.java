@@ -31,9 +31,6 @@ public class CardServiceImpl implements CardService{
         cardDaoImpl.updateCurrentBalance(cd);
     }
 
-    @Override
-    public CardDetails findByCardDetails(String cardNumber) {
-        return cardDaoImpl.findByCardDetails(cardNumber);
-    }
+    
     
 }

@@ -5,6 +5,7 @@
  */
 package com.pm.card.controller;
 
+import com.pm.card.dao.CardDao;
 import com.pm.card.domain.CardDetails;
 import com.pm.card.domain.UserAuthentication;
 import com.pm.card.service.impl.CardServiceImpl;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -30,40 +33,20 @@ import org.springframework.web.client.RestTemplate;
 public class LoginController {
 
     private boolean checkStatus = false;
+    
     @Autowired
-    private CardServiceImpl cardServiceImpl;
+    private CardDao cardDao;
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ResponseEntity<?> testMethod() {
-
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-
-            ShoppingInfo shoppingInfo = restTemplate.getForObject("http://localhost:8080/myshop/cardInfo", ShoppingInfo.class);
-            System.out.println(">>>>>>>>>>>>>" + shoppingInfo.getCardNumber());
-
-            System.out.println("Card Number " + shoppingInfo.getCardNumber());
-
-            CardDetails cardDetails = cardServiceImpl.findByCardDetails(shoppingInfo.getCardNumber());
-
-            if (shoppingInfo.getUsername().equalsIgnoreCase("admin") && shoppingInfo.getPassword().equals("admin")) {
-                if (cardDetails != null) {
-                    System.out.println("NOTTTTTTTT "+cardDetails.getCvv()+":::"+shoppingInfo.getCvv());
-                     if (cardDetails.getCardNumber().equals(shoppingInfo.getCardNumber()) && cardDetails.getCvv().equals(shoppingInfo.getCvv())) {
-                         System.out.println("NOTTTTTT****8");
-                         if (cardDetails.getTotalBalance() >= shoppingInfo.getTotalBalance()) {
-                            cardDetails.setTotalBalance(cardDetails.getTotalBalance() - shoppingInfo.getTotalBalance());
-                            System.out.println("BALANCE IS " + (cardDetails.getTotalBalance() - shoppingInfo.getTotalBalance()));
-                            cardServiceImpl.updateCurrentBalance(cardDetails); //update balance in database
-                            return new ResponseEntity<>(shoppingInfo, HttpStatus.OK);
-                        }                        
-                    }
-                }
-
-            }
-        } catch (Exception e) {
-        }
-        return null;
+    @RequestMapping(value = "/validate", method = RequestMethod.GET)
+    public @ResponseBody String testMethod(@RequestParam("cardNo") String cardNo, 
+            @RequestParam("balance") double balance,
+            @RequestParam("cvv") String cvv) 
+    {
+            CardDetails details = cardDao.findByCardDetails(cardNo,balance,cvv);
+            if(details != null)
+                return "success";
+            else
+                return "fail";
     }
 
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)

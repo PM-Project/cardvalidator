@@ -15,5 +15,5 @@ import java.util.List;
 public interface CardDao {
     public List<CardDetails> getCardDetails();
      public void updateCurrentBalance(CardDetails cd) ;
-     public CardDetails findByCardDetails(String cardNumber);
+     public CardDetails findByCardDetails(String cardNumber, double balance, String cvv);
 }

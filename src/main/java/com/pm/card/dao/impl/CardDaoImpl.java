@@ -34,9 +34,13 @@ public class CardDaoImpl extends SessionUtil implements CardDao{
     }
 
     @Override
-    public CardDetails findByCardDetails(String cardNumber) {
+    public CardDetails findByCardDetails(String cardNumber, double balance, String cvv) {
 //         return (CardDetails) getSession().get(CardDetails.class, cardNumber); 
-         return (CardDetails) getSession().createQuery("SELECT c FROM CardDetails c WHERE c.cardNumber = ?").setFetchSize(1).setParameter(0, cardNumber).uniqueResult();
+         return (CardDetails) getSession().createQuery("SELECT c FROM CardDetails c WHERE c.cardNumber = ? AND c.cvv = ? AND c.totalBalance > ?").setFetchSize(1)
+                 .setParameter(0, cardNumber)
+                 .setParameter(1, cvv)
+                 .setParameter(2, balance)
+                 .uniqueResult();
     }
     
 }
