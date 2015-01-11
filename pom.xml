@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.online.mum</groupId>
-    <artifactId>CardValidator</artifactId>
+    <artifactId>Team4_CardValidator</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>CardValidator</name>
+    <name>Team4_CardValidator</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>

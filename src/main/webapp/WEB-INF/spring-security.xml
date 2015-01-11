@@ -9,7 +9,7 @@
                                  http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
     <http>
-        <intercept-url pattern="/welcome*" access="ROLE_USER"/>
+        <intercept-url pattern="/**" access="ROLE_USER"/>
         <http-basic/>
     </http>
     
